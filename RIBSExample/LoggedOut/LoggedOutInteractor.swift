@@ -45,7 +45,6 @@ final class LoggedOutInteractor: PresentableInteractor<LoggedOutPresentable>, Lo
         let player1Name = player1Name ?? ""
         let player2Name = player2Name ?? ""
 
-        print("\(player1Name) vs \(player2Name)" )
         listener?.didLogin(with: player1Name, with: player2Name)
     }
 }
