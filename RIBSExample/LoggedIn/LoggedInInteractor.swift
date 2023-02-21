@@ -19,13 +19,16 @@ protocol LoggedInListener: AnyObject {
 }
 
 final class LoggedInInteractor: Interactor, LoggedInInteractable {
-
+    private let mutableScoreStream: MutableScoreStream
+    
     weak var router: LoggedInRouting?
     weak var listener: LoggedInListener?
 
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
-    override init() {}
+    init(mutableScoreStream: MutableScoreStream) {
+       self.mutableScoreStream = mutableScoreStream
+   }
 
     override func didBecomeActive() {
         super.didBecomeActive()
@@ -43,7 +46,8 @@ final class LoggedInInteractor: Interactor, LoggedInInteractable {
         router?.attachTicTacToe()
     }
     
-    func gameDidEnd() {
+    func gameDidEnd(withWinner winner: PlayerType?) {
+        mutableScoreStream.updateScore(withWinner: winner)
         router?.routeToOffGame()
     }
 }

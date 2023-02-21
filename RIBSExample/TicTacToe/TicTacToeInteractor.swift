@@ -14,15 +14,16 @@ protocol TicTacToeRouting: ViewableRouting {
 protocol TicTacToePresentable: Presentable {
     var listener: TicTacToePresentableListener? { get set }
     func setCell(atRow row: Int, col: Int, withPlayerType playerType: PlayerType)
-    func announce(winner: PlayerType)
+    func announce(winner: PlayerType?, withCompletionHandler handler: @escaping () -> ())
 }
 
 protocol TicTacToeListener: AnyObject {
-    func gameDidEnd()
+    func gameDidEnd(withWinner winner: PlayerType?)
 }
 
 final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, TicTacToeInteractable, TicTacToePresentableListener {
-
+    private var selectedCount: Int = 0
+    
     weak var router: TicTacToeRouting?
 
     weak var listener: TicTacToeListener?
@@ -54,18 +55,21 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
         let currentPlayer = getAndFlipCurrentPlayer()
         board[row][col] = currentPlayer
         presenter.setCell(atRow: row, col: col, withPlayerType: currentPlayer)
+        selectedCount += 1
 
         if let winner = checkWinner() {
-            presenter.announce(winner: winner)
+            presenter.announce(winner: winner) {
+                self.listener?.gameDidEnd(withWinner: winner)
+            }
+        } else if selectedCount == GameConstants.colCount * GameConstants.rowCount {
+            presenter.announce(winner: nil) {
+                self.listener?.gameDidEnd(withWinner: nil)
+            }
         }
     }
 
-    func closeGame() {
-        listener?.gameDidEnd()
-    }
-
     // MARK: - Private
-    private var currentPlayer = PlayerType.red
+    private var currentPlayer = PlayerType.player1
     private var board = [[PlayerType?]]()
 
     private func initBoard() {
@@ -76,7 +80,7 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
 
     private func getAndFlipCurrentPlayer() -> PlayerType {
         let currentPlayer = self.currentPlayer
-        self.currentPlayer = currentPlayer == .red ? .blue : .red
+        self.currentPlayer = currentPlayer == .player1 ? .player2 : .player1
         return currentPlayer
     }
 
@@ -136,8 +140,8 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
 }
 
 enum PlayerType: Int {
-    case red = 1
-    case blue
+    case player1
+    case player2
 }
 
 struct GameConstants {

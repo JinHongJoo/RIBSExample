@@ -8,5 +8,7 @@ target 'RIBSExample' do
   # Pods for RIBSExample
 	pod 'ModernRIBs'
 	pod 'SnapKit'
+	pod 'RxSwift'
+	pod 'RxCocoa'
 
 end

@@ -11,16 +11,21 @@ import SnapKit
 
 protocol TicTacToePresentableListener: AnyObject {
     func placeCurrentPlayerMark(atRow row: Int, col: Int)
-    func closeGame()
 }
 
 final class TicTacToeViewController: UIViewController, TicTacToePresentable, TicTacToeViewControllable {
 
     weak var listener: TicTacToePresentableListener?
 
-        init() {
+        private let player1Name: String
+        private let player2Name: String
+
+        init(player1Name: String, player2Name: String) {
+            self.player1Name = player1Name
+            self.player2Name = player2Name
             super.init(nibName: nil, bundle: nil)
         }
+
 
         required init?(coder aDecoder: NSCoder) {
             fatalError("Method is not supported")
@@ -38,9 +43,9 @@ final class TicTacToeViewController: UIViewController, TicTacToePresentable, Tic
             let indexPathRow = row * GameConstants.colCount + col
             let color: UIColor = {
                 switch playerType {
-                case .red:
+                case .player1:
                     return UIColor.red
-                case .blue:
+                case .player2:
                     return UIColor.blue
                 }
             }()
@@ -48,18 +53,22 @@ final class TicTacToeViewController: UIViewController, TicTacToePresentable, Tic
             cell?.backgroundColor = color
         }
 
-        func announce(winner: PlayerType) {
+        func announce(winner: PlayerType?, withCompletionHandler handler: @escaping () -> ()) {
             let winnerString: String = {
-                switch winner {
-                case .red:
-                    return "Red"
-                case .blue:
-                    return "Blue"
+                if let winner = winner {
+                    switch winner {
+                    case .player1:
+                        return "\(player1Name) won!"
+                    case .player2:
+                        return "\(player2Name) won!"
+                    }
+                } else {
+                    return "It's a draw!"
                 }
             }()
-            let alert = UIAlertController(title: "\(winnerString) Won!", message: nil, preferredStyle: .alert)
-            let closeAction = UIAlertAction(title: "Close Game", style: UIAlertAction.Style.default) { [weak self] _ in
-                self?.listener?.closeGame()
+            let alert = UIAlertController(title: winnerString, message: nil, preferredStyle: .alert)
+            let closeAction = UIAlertAction(title: "Close Game", style: UIAlertAction.Style.default) { _ in
+                handler()
             }
             alert.addAction(closeAction)
             present(alert, animated: true, completion: nil)

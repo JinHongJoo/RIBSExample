@@ -1,20 +1,34 @@
 PODS:
   - ModernRIBs (1.0.2)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - ModernRIBs
+  - RxCocoa
+  - RxSwift
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - ModernRIBs
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SnapKit
 
 SPEC CHECKSUMS:
   ModernRIBs: 9a37e8cdd7bf404972fc37e94ceaef0fd127d1c4
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 869d0d080b87ed9d445fe1a1e540930c8bcb2d0a
+PODFILE CHECKSUM: 18ff437e11427f945dd11eb6a9f91ed7d948b6f6
 
 COCOAPODS: 1.11.2

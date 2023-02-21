@@ -34,6 +34,9 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
         let player1Field = UITextField()
         self.player1Field = player1Field
         player1Field.borderStyle = UITextField.BorderStyle.line
+        player1Field.textColor = .systemBackground
+        player1Field.layer.borderWidth = 1
+        player1Field.layer.borderColor = UIColor.systemBackground.cgColor
         view.addSubview(player1Field)
         player1Field.placeholder = "Player 1 name"
         player1Field.snp.makeConstraints { (maker: ConstraintMaker) in
@@ -45,6 +48,9 @@ final class LoggedOutViewController: UIViewController, LoggedOutPresentable, Log
         let player2Field = UITextField()
         self.player2Field = player2Field
         player2Field.borderStyle = UITextField.BorderStyle.line
+        player2Field.textColor = .systemBackground
+        player2Field.layer.borderWidth = 1
+        player2Field.layer.borderColor = UIColor.systemBackground.cgColor
         view.addSubview(player2Field)
         player2Field.placeholder = "Player 2 name"
         player2Field.snp.makeConstraints { (maker: ConstraintMaker) in
